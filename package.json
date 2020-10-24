@@ -18,6 +18,7 @@
     "@tsconfig/svelte": "^1.0.3",
     "@types/jest": "^26.0.4",
     "@types/snowpack-env": "^2.3.0",
+    "camera-controls": "^1.25.1",
     "jest": "^26.2.2",
     "snowpack": "^2.15.1",
     "svelte-check": "^1.0.0",
