@@ -1,12 +1,16 @@
 <script lang="ts">
+	// Import Svelt3 components
 	import S3d from "./svelte3/S3d.svelte";
 	import Mesh from "./svelte3/Mesh.svelte";
 	import PointLight from "./svelte3/PointLight.svelte";
 	import MeshStandardMaterial from "./svelte3/MeshStandardMaterial.svelte";
 	import GeometrySelector from "./GeometrySelector.svelte"
-	import * as t$ from "three";
 	import AmbientLight from "./svelte3/AmbientLight.svelte";
 
+	// Import 3js
+	import * as t$ from "three";
+
+	// Setup local state
 	let showMesh=true;
 	let objectColor = "#ff1010";
 	let lightColor = "#ffffff";
@@ -14,12 +18,16 @@
 	let geometry1:t$.Geometry;
 	let geometry2:t$.Geometry;
 
+	// Handle the ray caster result and
+	// set the location of the position 
+	// sphere
+	let rayPosition = new t$.Vector3(0,0,0)
 	const click = (event:CustomEvent<t$.Intersection>)=>{
 		rayPosition = event.detail.point
 	}
-	const sphereGeometry = new t$.SphereGeometry(0.1,10,10)
 
-	let rayPosition = new t$.Vector3(0,0,0)
+	// Create a geometry for the position sphere
+	const sphereGeometry = new t$.SphereGeometry(0.1,128,128)
 
 </script>
 
@@ -28,6 +36,8 @@
 		margin: 1em;
 	}
 </style>
+
+<h1>Svelt3 Demo</h1>
 
 <input type=checkbox bind:checked={showMesh}/>
 
@@ -41,7 +51,7 @@
 <GeometrySelector bind:geometry={geometry2}/>
 
 <div class="App">
-	<S3d w={500} h={500}>
+	<S3d w={1024} h={768}>
 		<PointLight 
 			color={lightColor} 
 			intensity={1} 
@@ -63,7 +73,7 @@
 			<MeshStandardMaterial args={{color:"white"}}>
 				<Mesh geometry={sphereGeometry} position={rayPosition}/>
 			</MeshStandardMaterial>
-			<MeshStandardMaterial args={{color:objectColor}}>
+			<MeshStandardMaterial args={{color:objectColor, flatShading:false, roughness:0.1, metalness:0.8}}>
 				<Mesh on:click={click} geometry={geometry1}/>
 				<Mesh on:click={click} geometry={geometry2} position={new t$.Vector3(2,0,0)}/>
 			</MeshStandardMaterial>
