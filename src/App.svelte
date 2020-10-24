@@ -55,12 +55,8 @@
 		/>
 		{#if showMesh}
 			<MeshStandardMaterial args={{color:objectColor}}>
-				{#if geometry1}
 				<Mesh geometry={geometry1}/>
-				{/if}
-				{#if geometry2}
 				<Mesh geometry={geometry2} position={new t$.Vector3(2,0,0)}/>
-				{/if}
 			</MeshStandardMaterial>
 		{/if}
 	</S3d>
