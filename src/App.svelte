@@ -4,6 +4,7 @@
 	import PointLight from "./svelte3/PointLight.svelte";
 	// import MeshBasicMaterial from "./svelte3/MeshBasicMaterial.svelte";
 	import MeshStandardMaterial from "./svelte3/MeshStandardMaterial.svelte";
+	import GeometrySelector from "./GeometrySelector.svelte"
 	import * as t$ from "three";
 	import AmbientLight from "./svelte3/AmbientLight.svelte";
 
@@ -14,11 +15,13 @@
 		{label:"box", geometry: boxGeometry},
 		{label:"cone", geometry: coneGeometry},
 	]
-	let selectedGeometry = options[1]
 
 	let showMesh=true;
-	let objectColor = "#ff0000";
+	let objectColor = "#ffffff";
 	let lightColor = "#00ff00";
+
+	let geometry1:t$.Geometry;
+	let geometry2:t$.Geometry;
 </script>
 
 <style>
@@ -32,11 +35,11 @@
 <label for="point-light-color">light color</label>
 <input name="point-light-color" type=color bind:value={lightColor}/>
 
-<select bind:value={selectedGeometry}>
-	{#each options as option}
-		<option value={option}>{option.label}</option>
-	{/each}
-</select>
+
+<GeometrySelector bind:geometry={geometry1}/>
+
+<GeometrySelector bind:geometry={geometry2}/>
+
 <div class="App">
 	<S3d w={500} h={500}>
 		<PointLight 
@@ -52,7 +55,12 @@
 		/>
 		{#if showMesh}
 			<MeshStandardMaterial args={{color:objectColor}}>
-				<Mesh geometry={selectedGeometry.geometry}/>
+				{#if geometry1}
+				<Mesh geometry={geometry1}/>
+				{/if}
+				{#if geometry2}
+				<Mesh geometry={geometry2} position={new t$.Vector3(2,0,0)}/>
+				{/if}
 			</MeshStandardMaterial>
 		{/if}
 	</S3d>
