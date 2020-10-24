@@ -20,6 +20,8 @@
     "@types/snowpack-env": "^2.3.0",
     "camera-controls": "^1.25.1",
     "jest": "^26.2.2",
+    "just-debounce-it": "^1.1.0",
+    "just-throttle": "^1.1.0",
     "snowpack": "^2.15.1",
     "svelte-check": "^1.0.0",
     "svelte-preprocess": "^4.0.8",
