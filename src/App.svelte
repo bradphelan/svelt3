@@ -8,7 +8,7 @@
 	import AmbientLight from "./svelte3/AmbientLight.svelte";
 
 	let showMesh=true;
-	let objectColor = "#ffffff";
+	let objectColor = "#ff1010";
 	let lightColor = "#ffffff";
 
 	let geometry1:t$.Geometry;
@@ -44,13 +44,19 @@
 	<S3d w={500} h={500}>
 		<PointLight 
 			color={lightColor} 
-			intensity={2} 
+			intensity={1} 
 			distance={50} 
-			position={new t$.Vector3(2,2,0)}
+			position={new t$.Vector3(5,2,0)}
+		/>
+		<PointLight 
+			color={lightColor} 
+			intensity={1} 
+			distance={50} 
+			position={new t$.Vector3(-5,2,0)}
 		/>
 		<AmbientLight 
 			color="white" 
-			intensity={0.2} 
+			intensity={0.5} 
 			position={new t$.Vector3(2,2,0)}
 		/>
 		{#if showMesh}
