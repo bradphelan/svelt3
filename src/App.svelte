@@ -2,29 +2,31 @@
 	import S3d from "./svelte3/S3d.svelte";
 	import Mesh from "./svelte3/Mesh.svelte";
 	import PointLight from "./svelte3/PointLight.svelte";
-	// import MeshBasicMaterial from "./svelte3/MeshBasicMaterial.svelte";
 	import MeshStandardMaterial from "./svelte3/MeshStandardMaterial.svelte";
 	import GeometrySelector from "./GeometrySelector.svelte"
 	import * as t$ from "three";
 	import AmbientLight from "./svelte3/AmbientLight.svelte";
 
-	var boxGeometry = new t$.BoxGeometry(1, 1, 1);
-	var coneGeometry = new t$.ConeGeometry(1, 1, 32);
-
-	var options = [
-		{label:"box", geometry: boxGeometry},
-		{label:"cone", geometry: coneGeometry},
-	]
-
 	let showMesh=true;
 	let objectColor = "#ffffff";
-	let lightColor = "#00ff00";
+	let lightColor = "#ffffff";
 
 	let geometry1:t$.Geometry;
 	let geometry2:t$.Geometry;
+
+	const click = (event:CustomEvent<t$.Intersection>)=>{
+		rayPosition = event.detail.point
+	}
+	const sphereGeometry = new t$.SphereGeometry(0.1,10,10)
+
+	let rayPosition = new t$.Vector3(0,0,0)
+
 </script>
 
 <style>
+	.App{
+		margin: 1em;
+	}
 </style>
 
 <input type=checkbox bind:checked={showMesh}/>
@@ -35,9 +37,7 @@
 <label for="point-light-color">light color</label>
 <input name="point-light-color" type=color bind:value={lightColor}/>
 
-
 <GeometrySelector bind:geometry={geometry1}/>
-
 <GeometrySelector bind:geometry={geometry2}/>
 
 <div class="App">
@@ -54,9 +54,12 @@
 			position={new t$.Vector3(2,2,0)}
 		/>
 		{#if showMesh}
+			<MeshStandardMaterial args={{color:"white"}}>
+				<Mesh geometry={sphereGeometry} position={rayPosition}/>
+			</MeshStandardMaterial>
 			<MeshStandardMaterial args={{color:objectColor}}>
-				<Mesh geometry={geometry1}/>
-				<Mesh geometry={geometry2} position={new t$.Vector3(2,0,0)}/>
+				<Mesh on:click={click} geometry={geometry1}/>
+				<Mesh on:click={click} geometry={geometry2} position={new t$.Vector3(2,0,0)}/>
 			</MeshStandardMaterial>
 		{/if}
 	</S3d>
