@@ -1,12 +1,11 @@
 {
   "name": "svelt3",
-  "svelte": "build/_dist_/index_publish.js",
+  "svelte": "src/_dist_/index_publish.js",
   "files": [
-    "build/_dist_/svelt3/*.js",
-    "build/_dist_/demo/*.js",
-    "build/_dist_/index_publish.js",
-    "build/web_modules/**/*.*"
+    "build/**/*.*"
+    "src/"
   ],
+  "main": "build/_dist_/svelt3/index.js",
   "directories": {},
   "version": "0.0.8",
   "license": "MIT",
@@ -15,7 +14,6 @@
     "name": "Brad Phelan",
     "url": "https://github.com/bradphelan"
   },
-  "main": "build/_dist_/svelt3/index.js",
   "scripts": {
     "start": "snowpack dev",
     "build": "snowpack build",
@@ -24,6 +22,10 @@
   "dependencies": {
     "svelte": "^3.24.0"
   },
+  "keywords": [
+    "component",
+    "svelte"
+  ],
   "devDependencies": {
     "@snowpack/app-scripts-svelte": "^1.9.1",
     "@snowpack/plugin-dotenv": "^2.0.4",
@@ -42,6 +44,7 @@
     "just-debounce-it": "^1.1.0",
     "just-throttle": "^1.1.0",
     "snowpack": "^2.15.1",
+    "snowpack-plugin-rollup-bundle": "^0.3.3",
     "svelte-check": "^1.0.0",
     "svelte-preprocess": "^4.0.8",
     "svelte2tsx": "^0.1.133",
