@@ -1,15 +1,14 @@
 <script lang="ts">
 	// Import Svelt3 components
-	import S3d from "./svelte3/S3d.svelte";
-	import Mesh from "./svelte3/Mesh.svelte";
-	import PointLight from "./svelte3/PointLight.svelte";
-	import MeshStandardMaterial from "./svelte3/MeshStandardMaterial.svelte";
+	import S3d from "./svelt3/S3d.svelte";
+	import Mesh from "./svelt3/Mesh.svelte";
+	import PointLight from "./svelt3/PointLight.svelte";
+	import MeshStandardMaterial from "./svelt3/MeshStandardMaterial.svelte";
 	import GeometrySelector from "./GeometrySelector.svelte"
-	import AmbientLight from "./svelte3/AmbientLight.svelte";
-	import SpotLight from "./svelte3/SpotLight.svelte";
-	import Axes from "./svelte3/Axes.svelte"
+	import AmbientLight from "./svelt3/AmbientLight.svelte";
+	import SpotLight from "./svelt3/SpotLight.svelte";
+	import Axes from "./svelt3/Axes.svelte"
 
-	import throttle from 'just-throttle';
 	import debounce from 'just-debounce-it';
 
 	// Import 3js
@@ -43,7 +42,7 @@
 
 	// Create a geometry for the position sphere
 	let sphereGeometry = new t$.SphereGeometry(selectorSize,128,128)
-	let updateSelectorSize = debounce((event:InputEvent)=>{
+	let updateSelectorSize = debounce((event: any)=>{
 		sphereGeometry = new t$.SphereGeometry((event.target as HTMLInputElement).valueAsNumber,128,128)
 	},200)
 
@@ -84,16 +83,18 @@
 <h1>Svelte + ThreeJS Ray Cast Demo</h1>
 
 <div class="main">
+	<!-- svelte-ignore a11y-label-has-associated-control -->
+	<!-- don't really care about a11y for this demo. clusters the code-->
 	<div class="form">
 		<header>Options</header>
-		<label for="showhide">show meshes</label>
-		<input name="showhide" type=checkbox bind:checked={showMesh}/>
+		<label >show meshes</label>
+		<input  type=checkbox bind:checked={showMesh}/>
 
-		<label for="object-color">object color</label>
-		<input name="object-color" type=color bind:value={objectColor}/>
+		<label >object color</label>
+		<input  type=color bind:value={objectColor}/>
 
-		<label for="point-light-color">light color</label>
-		<input name="point-light-color" type=color bind:value={lightColor}/>
+		<label >light color</label>
+		<input  type=color bind:value={lightColor}/>
 
 		<label>first geometry</label>
 		<GeometrySelector bind:geometry={geometry1}/>
@@ -101,24 +102,23 @@
 		<label>second geometry</label>
 		<GeometrySelector bind:geometry={geometry2}/>
 
-		<label for="roughness">selector roughness</label>
-		<input name="roughness" type="range" step=0.01 min=0 max=1 bind:value={selectorRoughness}/>
+		<label >selector roughness</label>
+		<input  step=0.01 min=0 max=1 bind:value={selectorRoughness}/>
 
-		<label for="metallness">selector metallness</label>
-		<input name="metallness" type="range" step=0.01 min=0 max=1 bind:value={selectorMetallness}/>
+		<label >selector metallness</label>
+		<input  step=0.01 min=0 max=1 bind:value={selectorMetallness}/>
 
-		<label for="selectorSize">selector size</label>
-		<input name="selectorSize" type="range" step=0.01 min=0 max=0.5 
-			value={selectorSize} on:input={updateSelectorSize}/>
+		<label >selector size</label>
+		<input  step=0.01 min=0 max=0.5 value={selectorSize} on:input={updateSelectorSize}/>
 
-		<label for="pointLightIntesity">point light intensity</label>
-		<input name="pointLightIntesity" type="range" step=0.01 min=0 max=2 bind:value={pointLightIntensity}/>
+		<label >point light intensity</label>
+		<input  step=0.01 min=0 max=2 bind:value={pointLightIntensity}/>
 
-		<label for="spot angle">spot angle</label>
-		<input name="spot angle" type="range" step={0.01} min=0 max={Math.PI/2} bind:value={spotAngle}/>
+		<label >spot angle</label>
+		<input  step={0.01} min=0 max={Math.PI/2} bind:value={spotAngle}/>
 
-		<label for="spot intensity">spot intensity</label>
-		<input name="spot intensity" type="range" step={0.01} min=0 max={2} bind:value={spotIntensity}/>
+		<label >spot intensity</label>
+		<input  step={0.01} min=0 max={2} bind:value={spotIntensity}/>
 
 	</div>
 	<div class="App">
@@ -163,7 +163,7 @@
 					roughness:selectorRoughness, 
 					metalness:selectorMetallness
 				}}>
-					<Mesh on:click={click} geometry={geometry1} position={new t$.Vector3(0,0,0)} name="brad" bind:object3d={cone1} />
+					<Mesh on:click={click} geometry={geometry1} position={new t$.Vector3(0,0,0)}  let:object3d={cone1} />
 					<Mesh on:click={click} geometry={geometry2} position={new t$.Vector3(2,0,0)}/>
 				</MeshStandardMaterial>
 			{/if}
