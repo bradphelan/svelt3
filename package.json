@@ -1,14 +1,21 @@
 {
   "name": "svelt3",
-  "svelte": "src/index.js",
-  "version": "0.0.2",
+  "svelte": "build/_dist_/index_publish.js",
+  "files": [
+    "build/_dist_/svelt3/*.js",
+    "build/_dist_/demo/*.js",
+    "build/_dist_/index_publish.js",
+    "build/web_modules/**/*.*"
+  ],
+  "directories": {},
+  "version": "0.0.8",
   "license": "MIT",
   "author": {
     "email": "bradphelan@xtargets.com",
     "name": "Brad Phelan",
     "url": "https://github.com/bradphelan"
   },
-  "main": "src/svelt3/index.js",
+  "main": "build/_dist_/svelt3/index.js",
   "scripts": {
     "start": "snowpack dev",
     "build": "snowpack build",
