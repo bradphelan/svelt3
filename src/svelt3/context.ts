@@ -1,16 +1,15 @@
 import * as t$ from 'three'
-import type THREE from 'three'
 import { getContext, setContext} from 'svelte'
 
 let contextKey = {};
 
 export class Context {
-    renderer: THREE.Renderer
-    camera:THREE.Camera
-    container:THREE.Object3D
-    material: THREE.Material
-    rayCaster:THREE.Raycaster
-    constructor(renderer:THREE.Renderer,camera:THREE.Camera,container:THREE.Object3D, material:THREE.Material)
+    renderer: t$.Renderer
+    camera:t$.Camera
+    container:t$.Object3D
+    material: t$.Material
+    rayCaster:t$.Raycaster
+    constructor(renderer:t$.Renderer,camera:t$.Camera,container:t$.Object3D, material:t$.Material)
     {
         this.renderer=renderer
         this.camera=camera
@@ -20,14 +19,14 @@ export class Context {
     }
 
     /// Changes the object 3D context
-    pushObject3D(child:THREE.Object3D)
+    pushObject3D(child:t$.Object3D)
     {
         this.container.add(child);
         return new Context(this.renderer, this.camera, child, this.material);
     }
 
     /// Changes the material context
-    pushMaterial(material:THREE.Material):Context{
+    pushMaterial(material:t$.Material):Context{
         return new Context(this.renderer, this.camera, this.container, material);
     }
 
