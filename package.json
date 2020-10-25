@@ -1,7 +1,7 @@
 {
   "name": "svelt3",
   "svelte": "src/index.js",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "author": {
     "email": "bradphelan@xtargets.com",
