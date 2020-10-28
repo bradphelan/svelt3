@@ -9,8 +9,7 @@
     import { createEventDispatcher, onDestroy } from "svelte";
     import { log } from "../demo/Console.svelte";
     import type { InteractionEvent} from 'three.interaction'
-    import {InteractionEventTypes} from './three.interaction'
-
+    import {InteractionEventTypes,forwardEventsToSvelte} from './three.interaction'
 
     let context = Context.GetContext()
 
@@ -23,21 +22,10 @@
 
     let mesh = new three.Mesh(undefined,context.material)
 
-
-
     const dispatch = createEventDispatcher();
-    const dispatch_ = (name:string, ev:InteractionEvent)=>{
-        dispatch(name, ev)
-    }
-
-    //@ts-ignore:
-    mesh.cursor="pointer";
-    InteractionEventTypes.forEach(event => {
-       mesh.on(event,(ev: InteractionEvent)=>(dispatch_(event,ev)))
-    });
+    forwardEventsToSvelte(mesh,dispatch)
 
     export const object3d: three.Object3D = mesh
-
 
     let meshContext = context.pushObject3D(mesh);
 
