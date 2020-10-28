@@ -2,9 +2,9 @@
     import { onMount} from 'svelte';
     import Context from './context'
     import CameraControls from 'camera-controls'
-    import * as t$ from 'three'
+    import * as three from 'three'
 
-    CameraControls.install({THREE:t$})
+    CameraControls.install({THREE:three})
 
     // Width
     export let w:number = 500;
@@ -14,11 +14,11 @@
     let canvas:HTMLDivElement| undefined = undefined;
 
 
-    let scene = new t$.Scene();
-    let camera = new t$.PerspectiveCamera( 75, w/h , 0.1, 1000 );
+    let scene = new three.Scene();
+    let camera = new three.PerspectiveCamera( 75, w/h , 0.1, 1000 );
     camera.position.z = 4;
-    var renderer = new t$.WebGLRenderer({antialias:true});
-    renderer.shadowMap.type=t$.PCFSoftShadowMap;
+    var renderer = new three.WebGLRenderer({antialias:true});
+    renderer.shadowMap.type=three.PCFSoftShadowMap;
     renderer.shadowMap.enabled = true;
 
     // Configure renderer clear color
@@ -26,10 +26,10 @@
     // Configure renderer size
     renderer.setSize( w, h);
 
-    let context = new Context(renderer, camera, scene,new t$.MeshBasicMaterial({color:"red"}))
+    let context = new Context(renderer, camera, scene,new three.MeshBasicMaterial({color:"red"}))
 
     Context.SetContext(context);
-    const clock = new t$.Clock();
+    const clock = new three.Clock();
     const cameraControls = new CameraControls( camera, renderer.domElement );
     onMount(()=>{
         if(canvas){

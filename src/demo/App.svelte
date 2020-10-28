@@ -11,23 +11,29 @@
 
 	import debounce from 'just-debounce-it';
 
+	import Console, {log} from "./Console.svelte"
+	import type {InteractionEvent} from 'three.interaction'
+
 	// Import 3js
-	import * as t$ from "three";
+	import * as three from "three";
 
 	// Setup local state
 	let showMesh=true;
 	let objectColor = "#ff1010";
 	let lightColor = "#ffffff";
 
-	let geometry1:t$.Geometry;
-	let geometry2:t$.Geometry;
+	let geometry1:three.Geometry;
+	let geometry2:three.Geometry;
 
 	// Handle the ray caster result and
 	// set the location of the position 
 	// sphere
-	let rayPosition = new t$.Vector3(0,0,0)
-	const click = (event:CustomEvent<t$.Intersection>)=>{
-		rayPosition = event.detail.point
+	let rayPosition = new three.Vector3(0,0,0)
+	const click = (event:CustomEvent<InteractionEvent>)=>{
+		rayPosition = event.detail.intersects[0].point
+		log("got click at ")
+		console.log(event)
+		log(event)
 	}
 
 
@@ -38,18 +44,20 @@
 	let spotAngle=1;
 	let spotIntensity=1;
 
-	let ground = new t$.PlaneGeometry(10,10);
+	let ground = new three.PlaneGeometry(10,10);
 
 	// Create a geometry for the position sphere
-	let sphereGeometry = new t$.SphereGeometry(selectorSize,128,128)
+	let sphereGeometry = new three.SphereGeometry(selectorSize,128,128)
 	let updateSelectorSize = debounce((event: any)=>{
-		sphereGeometry = new t$.SphereGeometry((event.target as HTMLInputElement).valueAsNumber,128,128)
+		sphereGeometry = new three.SphereGeometry((event.target as HTMLInputElement).valueAsNumber,128,128)
 	},200)
 
-	let cone1: t$.Object3D;
+	let cone1: three.Object3D;
+
 
 	$: {
-		console.log(cone1)
+		log("test")
+		log("cat")
 	}
 
 </script>
@@ -127,29 +135,31 @@
 				color={lightColor} 
 				intensity={pointLightIntensity} 
 				distance={50} 
-				position={new t$.Vector3(5,2,0)}
+				position={new three.Vector3(5,2,0)}
 			/>
 			<PointLight 
 				color={lightColor} 
 				intensity={pointLightIntensity} 
 				distance={50} 
-				position={new t$.Vector3(-5,2,0)}
+				position={new three.Vector3(-5,2,0)}
 			/>
 			<AmbientLight 
 				color="white" 
 				intensity={0.5} 
-				position={new t$.Vector3(2,2,0)}
+				position={new three.Vector3(2,2,0)}
 			/>
-			<SpotLight position={new t$.Vector3(-10,10,0)} target={cone1} angle={spotAngle} intensity={spotIntensity}/>
-			<Axes/>
+			<SpotLight position={new three.Vector3(-10,10,0)} target={cone1} angle={spotAngle} intensity={spotIntensity}/>
+
+			<!-- Something wrong with the axis that breaks the event handling ?? -->
+			<!-- <Axes/> -->
 
 			<MeshStandardMaterial args={{color:"white"}}>
 				<Mesh geometry={ground} 
-					rotation={new t$.Euler(-Math.PI/2,0,0,'XYZ')} 
-					position={new t$.Vector3(0,-1,0)}
+					rotation={new three.Euler(-Math.PI/2,0,0,'XYZ')} 
+					position={new three.Vector3(0,-1,0)}
 					receiveShadow={true}
 					castShadow={true}
-					on:click={click}
+					on:mousemove={click}
 				/>
 			</MeshStandardMaterial>
 
@@ -163,10 +173,15 @@
 					roughness:selectorRoughness, 
 					metalness:selectorMetallness
 				}}>
-					<Mesh on:click={click} geometry={geometry1} position={new t$.Vector3(0,0,0)}  let:object3d={cone1} />
-					<Mesh on:click={click} geometry={geometry2} position={new t$.Vector3(2,0,0)}/>
+					<Mesh on:mousemove={click} geometry={geometry1} position={new three.Vector3(0,0,0)}  let:object3d={cone1} />
+					<Mesh on:mousemove={click} geometry={geometry2} position={new three.Vector3(2,0,0)}/>
 				</MeshStandardMaterial>
 			{/if}
 		</S3d>
 	</div>
+</div>
+
+<div>
+	<h1>Log</h1>
+	<Console/>
 </div>
