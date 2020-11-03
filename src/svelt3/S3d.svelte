@@ -11,7 +11,7 @@
     let scene = new three.Scene();
     let camera = new three.PerspectiveCamera( 75, 1 , 0.1, 1000 );
     camera.position.z = 4;
-    var renderer = new three.WebGLRenderer({antialias:true});
+    export let renderer = new three.WebGLRenderer({antialias:true});
     renderer.shadowMap.type=three.PCFSoftShadowMap;
     renderer.shadowMap.enabled = true;
 
@@ -26,30 +26,23 @@
     const clock = new three.Clock();
     const cameraControls = new CameraControls( camera, renderer.domElement );
 
+    // Used for matching the canvas to the wrapping div
     let h=0;
     let w=0;
-    let resizeRendererToDisplaySize = (renderer:three.WebGLRenderer) =>{
+
+    $: {
         const canvas = renderer.domElement;
         const width = canvas.clientWidth;
         const height = canvas.clientHeight;
         const needResize = width !== w|| height !== h;
-        if(needResize)
+        if(needResize){
             renderer.setSize(w, h, true);
-        return needResize
-    }
-
-
-    $: {
-        let perspective = w/h
-        let canvas = renderer.domElement;
-
-        if (resizeRendererToDisplaySize(renderer)) {
-            const canvas = renderer.domElement;
             camera.aspect = canvas.clientWidth / canvas.clientHeight;
             camera.updateProjectionMatrix();
             renderer.render(scene, camera);
         }
     }
+
     onMount(()=>{
         if(canvasContainer){
             canvasContainer.appendChild(renderer.domElement);
