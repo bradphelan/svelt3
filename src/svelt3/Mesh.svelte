@@ -54,9 +54,9 @@ import type { InteractionEvent } from "three.interaction";
     //@ts-ignore
     mesh.on("mousedown",(e:InteractionEvent)=>{
         if(enableDrag){
-            cameraControlsEnabled = context.cameraControls.enabled;
-            context.cameraControls.enabled = false;
             if(dragState==DragState.NoDrag){
+                cameraControlsEnabled = context.cameraControls.enabled;
+                context.cameraControls.enabled = false;
                 dragState = DragState.DragMaybe;
                 window.addEventListener("mousemove", dragMouseMove)
                 window.addEventListener("mouseup", dragMouseUp)
@@ -80,8 +80,8 @@ import type { InteractionEvent } from "three.interaction";
     
     let dragMouseUp = (e:any)=>{
         if(enableDrag){
-            context.cameraControls.enabled = cameraControlsEnabled;
             if(dragState!=DragState.NoDrag){
+                context.cameraControls.enabled = cameraControlsEnabled;
                 dragState = DragState.NoDrag;
                 dispatch("stopdrag", {currentTarget: mesh, type:"stopdrag"})
                 window.removeEventListener("mousemove",dragMouseMove)
