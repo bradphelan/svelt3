@@ -59,6 +59,9 @@
 		log("test");
 		log("cat");
 	}
+
+	let w = 0;
+	let h = 0;
 </script>
 
 <style>
@@ -81,16 +84,12 @@
 		display: flex;
 		flex-direction: row;
 	}
-	.App {
-		flex: 1;
-		margin: 1em;
-	}
 </style>
 
 
 <div id="root" style="display:flex; flex-direction: column; height:100vh">
 	<h1>Svelte + ThreeJS Ray Cast Demo</h1>
-	<div class="main">
+	<div class="main" style="display:flex; flex-direction: row">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<!-- don't really care about a11y for this demo. clusters the code-->
 		<div class="form">
@@ -160,62 +159,60 @@
 				bind:value={spotIntensity} />
 		</div>
 
-		<div class="App">
-			<S3d w={1024} h={768}>
-				<PointLight
-					color={lightColor}
-					intensity={pointLightIntensity}
-					distance={50}
-					position={new three.Vector3(5, 2, 0)} />
-				<PointLight
-					color={lightColor}
-					intensity={pointLightIntensity}
-					distance={50}
-					position={new three.Vector3(-5, 2, 0)} />
-				<AmbientLight
-					color="white"
-					intensity={0.5}
-					position={new three.Vector3(2, 2, 0)} />
-				<SpotLight
-					position={new three.Vector3(-10, 10, 0)}
-					target={cone1}
-					angle={spotAngle}
-					intensity={spotIntensity} />
+		<S3d style="flex:1 1 auto">
+			<PointLight
+				color={lightColor}
+				intensity={pointLightIntensity}
+				distance={50}
+				position={new three.Vector3(5, 2, 0)} />
+			<PointLight
+				color={lightColor}
+				intensity={pointLightIntensity}
+				distance={50}
+				position={new three.Vector3(-5, 2, 0)} />
+			<AmbientLight
+				color="white"
+				intensity={0.5}
+				position={new three.Vector3(2, 2, 0)} />
+			<SpotLight
+				position={new three.Vector3(-10, 10, 0)}
+				target={cone1}
+				angle={spotAngle}
+				intensity={spotIntensity} />
 
-				<!-- Something wrong with the axis that breaks the event handling ?? -->
-				<!-- <Axes/> -->
+			<!-- Something wrong with the axis that breaks the event handling ?? -->
+			<!-- <Axes/> -->
 
+			<MeshStandardMaterial args={{ color: 'white' }}>
+				<Mesh
+					geometry={ground}
+					rotation={new three.Euler(-Math.PI / 2, 0, 0, 'XYZ')}
+					position={new three.Vector3(0, -1, 0)}
+					receiveShadow={true}
+					castShadow={true}
+					on:click={click} />
+			</MeshStandardMaterial>
+
+			{#if showMesh}
 				<MeshStandardMaterial args={{ color: 'white' }}>
 					<Mesh
-						geometry={ground}
-						rotation={new three.Euler(-Math.PI / 2, 0, 0, 'XYZ')}
-						position={new three.Vector3(0, -1, 0)}
-						receiveShadow={true}
-						castShadow={true}
-						on:click={click} />
+						geometry={sphereGeometry}
+						position={rayPosition} />
 				</MeshStandardMaterial>
-
-				{#if showMesh}
-					<MeshStandardMaterial args={{ color: 'white' }}>
-						<Mesh
-							geometry={sphereGeometry}
-							position={rayPosition} />
-					</MeshStandardMaterial>
-					<MeshStandardMaterial
-						args={{ color: objectColor, flatShading: false, roughness: selectorRoughness, metalness: selectorMetallness }}>
-						<Mesh
-							on:click={click}
-							geometry={geometry1}
-							position={new three.Vector3(0, 0, 0)}
-							let:object3d={cone1} />
-						<Mesh
-							on:click={click}
-							geometry={geometry2}
-							position={new three.Vector3(2, 0, 0)} />
-					</MeshStandardMaterial>
-				{/if}
-			</S3d>
-		</div>
+				<MeshStandardMaterial
+					args={{ color: objectColor, flatShading: false, roughness: selectorRoughness, metalness: selectorMetallness }}>
+					<Mesh
+						on:click={click}
+						geometry={geometry1}
+						position={new three.Vector3(0, 0, 0)}
+						let:object3d={cone1} />
+					<Mesh
+						on:click={click}
+						geometry={geometry2}
+						position={new three.Vector3(2, 0, 0)} />
+				</MeshStandardMaterial>
+			{/if}
+		</S3d>
 	</div>
 
 	<div style="flex:1; display:flex; flex-direction:column;">
