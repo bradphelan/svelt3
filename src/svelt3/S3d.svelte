@@ -3,7 +3,6 @@
     import Context from './context'
     import CameraControls from 'camera-controls'
     import * as three from 'three'
-import Axes from './Axes.svelte';
 
     CameraControls.install({THREE:three})
 
@@ -27,18 +26,18 @@ import Axes from './Axes.svelte';
     const clock = new three.Clock();
     const cameraControls = new CameraControls( camera, renderer.domElement );
 
+    let h=0;
+    let w=0;
     let resizeRendererToDisplaySize = (renderer:three.WebGLRenderer) =>{
         const canvas = renderer.domElement;
         const width = canvas.clientWidth;
         const height = canvas.clientHeight;
-        console.log("canvas");
-        const needResize = canvas.width !== w|| canvas.height !== h;
-        //renderer.setSize(w, h, false);
+        const needResize = width !== w|| height !== h;
+        if(needResize)
+            renderer.setSize(w, h, true);
         return needResize
     }
 
-    let h=0;
-    let w=0;
 
     $: {
         let perspective = w/h
@@ -54,8 +53,9 @@ import Axes from './Axes.svelte';
     onMount(()=>{
         if(canvasContainer){
             canvasContainer.appendChild(renderer.domElement);
-            renderer.domElement.style.width = `100%`;
-            renderer.domElement.style.height = `100%`;
+            renderer.domElement.style.position = "absolute";
+            renderer.domElement.style.height = `0px`;
+            renderer.domElement.style.height = `0px`;
             // Render Loop
             (function render () {
                 const delta = clock.getDelta();
