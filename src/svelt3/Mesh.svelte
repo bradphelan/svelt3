@@ -7,9 +7,7 @@
 <script lang="ts">
     import Context from "./context"
     import { createEventDispatcher, onDestroy } from "svelte";
-    import { log } from "../demo/Console.svelte";
-    import type { InteractionEvent} from 'three.interaction'
-    import {InteractionEventTypes,forwardEventsToSvelte} from './three.interaction'
+    import {forwardEventsToSvelte} from './three.interaction'
 
     let context = Context.GetContext()
 
