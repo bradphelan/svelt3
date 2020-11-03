@@ -7,7 +7,6 @@
 	import GeometrySelector from "./GeometrySelector.svelte";
 	import AmbientLight from "../svelt3/AmbientLight.svelte";
 	import SpotLight from "../svelt3/SpotLight.svelte";
-	import Axes from "../svelt3/Axes.svelte";
 
 	import debounce from "just-debounce-it";
 
@@ -60,8 +59,9 @@
 		log("cat");
 	}
 
-	let w = 0;
-	let h = 0;
+	let drag = (e:any)=>{
+		console.log("drag ", e.type, e.currentTarget)
+	}
 </script>
 
 <style>
@@ -190,14 +190,20 @@
 					position={new three.Vector3(0, -1, 0)}
 					receiveShadow={true}
 					castShadow={true}
-					on:click={click} />
+					on:click={click}
+				/>
 			</MeshStandardMaterial>
 
 			{#if showMesh}
 				<MeshStandardMaterial args={{ color: 'white' }}>
 					<Mesh
 						geometry={sphereGeometry}
-						position={rayPosition} />
+						position={rayPosition} 
+						enableDrag={true}
+						on:startdrag={drag}
+						on:stopdrag={drag}
+						on:drag={drag}
+						/>
 				</MeshStandardMaterial>
 				<MeshStandardMaterial
 					args={{ color: objectColor, flatShading: false, roughness: selectorRoughness, metalness: selectorMetallness }}>

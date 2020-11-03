@@ -18,13 +18,14 @@
     // Configure renderer clear color
     renderer.setClearColor("#000000");
   
-    let context = new Context(renderer, camera, scene,new three.MeshBasicMaterial({color:"red"}))
+    const cameraControls = new CameraControls( camera, renderer.domElement );
+
+    let context = new Context(renderer, camera, scene,new three.MeshBasicMaterial({color:"red"}), cameraControls)
 
     export let style=""
 
     Context.SetContext(context);
     const clock = new three.Clock();
-    const cameraControls = new CameraControls( camera, renderer.domElement );
 
     // Used for matching the canvas to the wrapping div
     let h=0;

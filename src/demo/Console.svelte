@@ -3,7 +3,6 @@
     let consoleStore = writable<any[]>([]);
 
     export const log = (txt: any) => {
-        console.log(log)
         consoleStore.update((old) => [txt, ...old]);
     };
 
